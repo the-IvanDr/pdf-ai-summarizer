@@ -1,15 +1,32 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { SummariesService } from './summaries.service';
 import { Summary } from './entities/summary.entity';
-import { SummaryCreateDto } from './dto/summary.create.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('summaries')
 export class SummariesController {
   constructor(private readonly summariesService: SummariesService) {}
 
   @Post()
-  create(@Body() createDto: SummaryCreateDto): Promise<Summary> {
-    return this.summariesService.create(createDto.file);
+  @UseInterceptors(FileInterceptor('file'))
+  create(@UploadedFile() file: Express.Multer.File): Promise<Summary> {
+    if (!file) {
+      throw new Error('No file uploaded');
+    }
+
+    if (file.mimetype !== 'application/pdf') {
+      throw new Error('Only PDF files are allowed');
+    }
+
+    return this.summariesService.create(file);
   }
 
   @Get(':id')
