@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -14,6 +15,16 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @Controller('summaries')
 export class SummariesController {
   constructor(private readonly summariesService: SummariesService) {}
+
+  @Get()
+  getSummaries(@Query('take') take?: number) {
+    return this.summariesService.findAll(take);
+  }
+
+  @Get(':id')
+  getSummary(@Param('id') id: number) {
+    return this.summariesService.findOne(id);
+  }
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
@@ -28,14 +39,6 @@ export class SummariesController {
 
     return this.summariesService.create(file);
   }
-
-  @Get(':id')
-  getSummary(@Param('id') id: string) {
-    return { summaryId: id };
-  }
-
-  @Get()
-  getSummaries() {}
 
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
