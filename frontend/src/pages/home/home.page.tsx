@@ -1,20 +1,31 @@
+import { useSummaryMutations } from "@/api/hooks/summary-mutation.hook";
 import { PDFUpload } from "@/components/PDFUpload/PDFUpload";
-import { Box, Button } from "@chakra-ui/react";
+import { Prose } from "@/components/ui/prose";
+import { SummaryModel } from "@/models/summary.model";
+import { Box, Button, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 export function Home() {
-  const [files, setFiles] = useState<File[]>([]);
+  const { createSummary } = useSummaryMutations();
+  const [summary, setSummary] = useState<SummaryModel>();
+  const [file, setFile] = useState<File>();
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleFileAccept = (files: File[]) => {
-    console.log(files);
-    setFiles(files);
+  const handleFileAccept = (file: File) => {
+    setFile(file);
   };
 
-  const handleGenerateSummary = () => {
-    console.log("Generate summary");
+  const handleGenerateSummary = async () => {
+    if (!file) {
+      return;
+    }
+
     setIsLoading(true);
+    const createdSummary = await createSummary(file);
+    setIsLoading(false);
+
+    setSummary(createdSummary);
   };
 
   return (
@@ -26,9 +37,9 @@ export function Home() {
         outlineStyle="solid"
         borderRadius="8px"
       >
-        <PDFUpload onFileAccept={handleFileAccept} />
+        <PDFUpload onFileAccept={(files) => handleFileAccept(files[0])} />
 
-        {files.length > 0 && (
+        {file && (
           <Box mt="2">
             <Button
               size="sm"
@@ -41,18 +52,15 @@ export function Home() {
         )}
       </Box>
 
-      <Box bg="gray.800" p="2" mb="2" borderRadius="md">
-        <h2>Summary:</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate
-          magni dicta architecto, perferendis sed labore nam minima quia
-          accusamus expedita qui? Expedita quibusdam ipsam voluptatum iusto
-          veritatis delectus provident! Libero! Sit autem voluptas saepe ipsa
-          molestiae tempora qui, dolorum natus unde voluptatum ratione.
-          Molestiae sit laboriosam obcaecati illo quo officiis et ut. Beatae
-          ipsum, ullam amet minus illum dolor cumque.
-        </p>
-      </Box>
+      {summary && (
+        <Box bg="gray.800" p="2" mb="2" borderRadius="md">
+          <Text as="h3">{summary.title}</Text>
+
+          <Prose w="full">
+            <div dangerouslySetInnerHTML={{ __html: summary.text }} />
+          </Prose>
+        </Box>
+      )}
     </Box>
   );
 }

@@ -16,6 +16,7 @@ export function LastSummariesSidebar() {
         <For each={summaries}>
           {(item) => (
             <Box
+              key={item.id}
               bg="gray.800"
               p="2"
               mb="2"
