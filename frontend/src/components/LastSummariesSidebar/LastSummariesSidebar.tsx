@@ -1,7 +1,8 @@
+import { useSummaries } from "@/api/hooks/summaries.hook";
 import { Box, For, Text } from "@chakra-ui/react";
 
 export function LastSummariesSidebar() {
-  const summaries: string[] = ["Summary 1", "Summary 2", "Summary 3"];
+  const { summaries } = useSummaries(10);
 
   return (
     <Box bg="gray.900" w="28rem" h="full" p="4">
@@ -9,7 +10,7 @@ export function LastSummariesSidebar() {
         Last summaries
       </Text>
 
-      {summaries.length === 0 ? (
+      {summaries?.length === 0 ? (
         <Text fontStyle="italic">No summaries</Text>
       ) : (
         <For each={summaries}>
@@ -22,7 +23,7 @@ export function LastSummariesSidebar() {
               _hover={{ bg: "gray.700" }}
               cursor="pointer"
             >
-              {item}
+              {item.title}
             </Box>
           )}
         </For>
