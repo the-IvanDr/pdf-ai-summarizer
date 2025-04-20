@@ -46,7 +46,7 @@ export function Home() {
               onClick={handleGenerateSummary}
               loading={isLoading}
             >
-              Generate Summary
+              {summary ? "Regenerate Summary" : "Generate Summary"}
             </Button>
           </Box>
         )}
