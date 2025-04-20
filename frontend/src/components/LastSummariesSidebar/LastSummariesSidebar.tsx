@@ -1,14 +1,25 @@
-import { useSummaries } from "@/api/hooks/summaries.hook";
-import { Box, For, HStack, IconButton, Text } from "@chakra-ui/react";
-import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { useNavigate } from "react-router";
+import { MdOutlineCreateNewFolder } from "react-icons/md";
+import { TiDelete } from "react-icons/ti";
+import { Box, For, HStack, IconButton, Text } from "@chakra-ui/react";
+import { useSummaries } from "@/api/hooks/summaries.hook";
+import { useSummaryMutations } from "@/api/hooks/summary-mutation.hook";
+
+import "./LastSummariesSidebar.css";
 
 export const TAKE = 5;
 
 export function LastSummariesSidebar() {
   const { summaries } = useSummaries(TAKE);
 
+  const { deleteSummary } = useSummaryMutations();
+
   const navigate = useNavigate();
+
+  const handleDeleteSummary = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    deleteSummary(id);
+  };
 
   const navigateToHomePage = () => {
     navigate("/");
@@ -35,18 +46,27 @@ export function LastSummariesSidebar() {
       ) : (
         <For each={summaries}>
           {(item) => (
-            <Box
+            <HStack
               key={item.id}
+              className="parent"
               bg="gray.800"
               p="2"
               mb="2"
               borderRadius="md"
+              justifyContent="space-between"
               _hover={{ bg: "gray.700" }}
               cursor="pointer"
               onClick={() => navigateToSummaryPage(item.id)}
             >
               {item.title}
-            </Box>
+              <IconButton
+                onClick={(e) => handleDeleteSummary(item.id, e)}
+                className="hidden-child"
+                variant="ghost"
+              >
+                <TiDelete />
+              </IconButton>
+            </HStack>
           )}
         </For>
       )}

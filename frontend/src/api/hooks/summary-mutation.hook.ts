@@ -29,10 +29,11 @@ export const useSummaryMutations = () => {
 
   const deleteSummary = async (id: number) => {
     try {
-      await api.delete(`/${id}`);
+      await api.delete(`summaries/${id}`);
 
       // Revalidate both the specific summary and the list
       mutate("summaries/");
+      mutate(`summaries?take=${TAKE}`);
       mutate(`summaries/${id}`, null, false); // Optimistically update the cache
     } catch (error) {
       console.error("API Error:", error);
