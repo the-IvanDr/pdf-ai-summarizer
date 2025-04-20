@@ -7,7 +7,7 @@
 /public
 
 # SQLite
-database.sqlite
+/database.sqlite
 
 # Logs
 logs
