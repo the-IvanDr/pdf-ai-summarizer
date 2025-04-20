@@ -1,5 +1,6 @@
 import { mutate } from "swr";
 import { api } from "../configs/axios";
+import { TAKE } from "@/components/LastSummariesSidebar/LastSummariesSidebar";
 
 export const useSummaryMutations = () => {
   const createSummary = async (file: File) => {
@@ -19,6 +20,7 @@ export const useSummaryMutations = () => {
 
       // Revalidate the summaries list
       mutate("summaries/");
+      mutate(`summaries?take=${TAKE}`);
       return response.data;
     } catch (error) {
       console.error("API Error:", error);

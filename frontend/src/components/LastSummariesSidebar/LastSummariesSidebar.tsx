@@ -3,8 +3,10 @@ import { Box, For, HStack, IconButton, Text } from "@chakra-ui/react";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { useNavigate } from "react-router";
 
+export const TAKE = 5;
+
 export function LastSummariesSidebar() {
-  const { summaries } = useSummaries(10);
+  const { summaries } = useSummaries(TAKE);
 
   const navigate = useNavigate();
 
