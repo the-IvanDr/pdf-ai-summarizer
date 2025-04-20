@@ -6,6 +6,9 @@
 # Static
 /public
 
+# SQLite
+database.sqlite
+
 # Logs
 logs
 *.log
