@@ -1,5 +1,9 @@
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PdfService } from 'src/pdf/pdf.service';
 import { OpenAIService, SummaryResult } from 'src/openai/openai.service';
@@ -36,7 +40,11 @@ export class SummariesService {
   }
 
   async remove(id: number): Promise<void> {
-    await this.summariesRepository.delete(id);
+    const result = await this.summariesRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Summary with ID ${id} not found`);
+    }
   }
 
   async createSummaryFromPdf(
@@ -51,7 +59,7 @@ export class SummariesService {
 
       return await this.openAIService.summarizeText(text);
     } catch (error) {
-      throw new Error(`Summary creation failed: ${error.message}`);
+      throw new BadRequestException(error.message);
     }
   }
 }
