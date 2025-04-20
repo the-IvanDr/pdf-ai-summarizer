@@ -20,7 +20,7 @@ export class SummariesService {
   ) {}
 
   findAll(take?: number): Promise<Summary[]> {
-    return this.summariesRepository.find({ take });
+    return this.summariesRepository.find({ take, order: { id: 'DESC' } });
   }
 
   findOne(id: number): Promise<Summary | null> {
