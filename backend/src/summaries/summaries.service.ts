@@ -1,9 +1,9 @@
+import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Summary } from './entities/summary.entity';
 import { PdfService } from 'src/pdf/pdf.service';
 import { OpenAIService, SummaryResult } from 'src/openai/openai.service';
+import { Summary } from './entities/summary.entity';
 
 @Injectable()
 export class SummariesService {
@@ -26,8 +26,10 @@ export class SummariesService {
   async create(file: Express.Multer.File): Promise<Summary> {
     const fileSummary = await this.createSummaryFromPdf(file);
 
+    const savedFileName = this.pdfService.saveFileInPublicDirectory(file);
+
     return this.summariesRepository.save({
-      file: 'filePath',
+      file: savedFileName,
       title: fileSummary.title,
       text: fileSummary.summary,
     });
