@@ -11,6 +11,9 @@ services:
       - FRONTEND_APP_URL=http://localhost:5173
     ports:
       - "3000:3000"
+    volumes:
+      - ./backend/database:/usr/src/app/database
+      - ./backend/public:/usr/src/app/public
 
   frontend:
     build:
