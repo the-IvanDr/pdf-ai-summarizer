@@ -29,7 +29,7 @@ export class OpenAIService {
           {
             role: 'system',
             content:
-              'You are a helpful assistant that summarizes text content. Provide a short title (3-5 words) and a concise summary structured in HTML format (2-3 sentences). Respond in JSON format with "title" and "summary" keys.',
+              'You are a helpful assistant that summarizes text content. Provide a short title (3-5 words) and a concise summary structured in HTML format. Respond in JSON format with "title" and "summary" keys.',
           },
           {
             role: 'user',
