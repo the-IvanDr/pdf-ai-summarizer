@@ -16,7 +16,7 @@ import { join } from 'path';
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'database.sqlite', // or ':memory:' for in-memory database
+      database: './db.sqlite', // set to ':memory:' for in-memory database
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
