@@ -1,12 +1,10 @@
 # PDF Summarizer
 
-## 1. Project Description
-
 **PDF Summarizer** is a web application that allows users to upload PDF files and generate concise text summaries. Users can also view previously generated summaries and access their uploaded PDF files. The project consists of two main components:
 - **Frontend**: A user-friendly interface built with modern web technologies.
 - **Backend**: A server that processes PDF files and generates summaries.
 
-## 2. Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 - Node.js `18.18.0`
@@ -21,11 +19,11 @@
     ```
     
 3. Create a **`.env`** file in the **`/frontend`** directory and copy the contents from **`.env-example`**.
-   Configure the following environment variable:
-    
-    ```
-    VITE_API_URL=http://localhost:3000  # Backend API URL
-    ```
+   
+    Configure the following environment variables:
+    | Variable           | Description                                      | Required | Default Value               |
+    |--------------------|--------------------------------------------------|----------|-----------------------------|
+    | `VITE_API_URL`     | Backend API URL                                  | Yes      | http://localhost:3000       |
     
 5. Run the application (by default is accessible at **`http://localhost:5173`**):
     - **Development mode**:
@@ -48,7 +46,15 @@
     npm install
     ```
     
-3. Create a **`.env`** file in the **`/backend`** directory and copy the contents from **`.env-example`**. Configure the environment variables as needed.
+3. Create a **`.env`** file in the **`/backend`** directory and copy the contents from **`.env-example`**.
+    Configure the following environment variables:
+    | Variable           | Description                                      | Required | Default Value               |
+    |--------------------|--------------------------------------------------|----------|-----------------------------|
+    | `OPENAI_API_KEY`   | OpenAI API key                                   | Yes      | -                           |
+    | `OPENAI_MODEL`     | OpenAI model used for processing                 | No       | `"gpt-3.5-turbo-0125"`      |
+    | `PORT`             | Port on which the backend server runs            | No       | `3000`                      |
+    | `FRONTEND_APP_URL` | Frontend origin URL (used for CORS configuration)| No       | `"http://localhost:5173"`   |
+
 4. Run the application (by default is accessible at **`http://localhost:3000`**):
     - **Development mode**:
         ```
@@ -61,7 +67,7 @@
         npm run start:prod
         ```
 
-## **3. Docker Usage**
+## **Docker Usage**
 
 The project includes a **`docker-compose.yml`** file for easy containerization. You can run both frontend and backend services together or separately.
 
@@ -88,7 +94,7 @@ docker-compose up
 - Frontend: **`http://localhost:5173`**
 - Backend: **`http://localhost:3000`**
 
-## **4. API Documentation**
+## **API Documentation**
 
 ### **Base URL**
 
